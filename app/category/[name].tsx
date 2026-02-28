@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -25,7 +25,9 @@ export default function CategoryScreen() {
   const insets = useSafeAreaInsets();
   const { addToCart, toggleWishlist, isInWishlist } = useStore();
 
-  const products = useMemo(() => getProductsByCategory(name || ""), [name]);
+  const [visibleCount, setVisibleCount] = useState(20);
+  const allCategoryProducts = useMemo(() => getProductsByCategory(name || ""), [name]);
+  const products = useMemo(() => allCategoryProducts.slice(0, visibleCount), [allCategoryProducts, visibleCount]);
 
   const productPairs = useMemo(() => {
     const pairs: Product[][] = [];
@@ -34,6 +36,10 @@ export default function CategoryScreen() {
     }
     return pairs;
   }, [products]);
+
+  const handleLoadMore = useCallback(() => {
+    setVisibleCount((prev) => prev + 20);
+  }, []);
 
   const handleProductPress = useCallback((sku: string) => {
     router.push({ pathname: "/product/[sku]", params: { sku } });
@@ -76,13 +82,19 @@ export default function CategoryScreen() {
         <View style={{ width: 40 }} />
       </View>
 
+      <Text style={[styles.countText, { color: colors.textSecondary }]}>
+        {allCategoryProducts.length} products
+      </Text>
+
       <FlatList
         data={productPairs}
         renderItem={renderProductPair}
         keyExtractor={(_, index) => `pair-${index}`}
         contentContainerStyle={[styles.listContent, { paddingBottom: Platform.OS === "web" ? 34 + 32 : 32 }]}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={productPairs.length > 0}
+        scrollEnabled={true}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
         ListEmptyComponent={
           <View style={styles.empty}>
             <Ionicons name="cube-outline" size={48} color={colors.textTertiary} />
@@ -139,5 +151,10 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 15,
+  },
+  countText: {
+    fontSize: 13,
+    paddingHorizontal: 20,
+    marginBottom: 4,
   },
 });

@@ -33,7 +33,7 @@ export default function SearchScreen() {
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
-    return searchProducts(query);
+    return searchProducts(query).slice(0, 50);
   }, [query]);
 
   const productPairs = useMemo(() => {
@@ -75,7 +75,7 @@ export default function SearchScreen() {
     [handleProductPress, handleAddToCart, toggleWishlist, isInWishlist]
   );
 
-  const popularProducts = useMemo(() => allProducts.sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 6), []);
+  const popularProducts = useMemo(() => [...allProducts].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 6), []);
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.background, paddingTop: Platform.OS === "web" ? webTopInset : 0 }]}>
@@ -143,7 +143,7 @@ export default function SearchScreen() {
             keyExtractor={(_, index) => `pair-${index}`}
             contentContainerStyle={[styles.listContent, { paddingBottom: Platform.OS === "web" ? 34 + 84 : 100 }]}
             showsVerticalScrollIndicator={false}
-            scrollEnabled={productPairs.length > 0}
+            scrollEnabled={true}
           />
         </>
       )}

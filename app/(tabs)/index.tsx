@@ -35,6 +35,17 @@ const categoryIcons: Record<string, string> = {
   "Joint & Collagen": "body-outline",
   "Vitamin D & K": "sunny-outline",
   "Probiotics & Gut": "leaf-outline",
+  "Fat Burners": "flame-outline",
+  "Testosterone Support": "shield-outline",
+  Minerals: "diamond-outline",
+  "Gym Equipment": "barbell-outline",
+  "Food & Snacks": "fast-food-outline",
+  "Mom & Baby": "heart-outline",
+  "Beauty & Hair": "sparkles-outline",
+  "Home & Living": "home-outline",
+  Accessories: "bag-outline",
+  Pets: "paw-outline",
+  "Other Supplements": "cube-outline",
 };
 
 export default function HomeScreen() {
@@ -48,15 +59,25 @@ export default function HomeScreen() {
 
   const webTopInset = Platform.OS === "web" ? 67 : 0;
 
+  const [visibleCount, setVisibleCount] = useState(20);
   const featuredProducts = useMemo(() => allProducts.filter((p) => p.rating >= 4.5).slice(0, 6), []);
   const filteredProducts = useMemo(() => {
-    if (selectedCategory === "All") return allProducts;
-    return allProducts.filter((p) => p.category === selectedCategory);
-  }, [selectedCategory]);
+    const source = selectedCategory === "All" ? allProducts : allProducts.filter((p) => p.category === selectedCategory);
+    return source.slice(0, visibleCount);
+  }, [selectedCategory, visibleCount]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 800);
+  }, []);
+
+  const handleCategoryChange = useCallback((cat: string) => {
+    setSelectedCategory(cat);
+    setVisibleCount(20);
+  }, []);
+
+  const handleLoadMore = useCallback(() => {
+    setVisibleCount((prev) => prev + 20);
   }, []);
 
   const handleProductPress = useCallback((sku: string) => {
@@ -213,14 +234,14 @@ export default function HomeScreen() {
           <CategoryPill
             label={t("filter.all", language)}
             isActive={selectedCategory === "All"}
-            onPress={() => setSelectedCategory("All")}
+            onPress={() => handleCategoryChange("All")}
           />
           {categories.map((cat) => (
             <CategoryPill
               key={cat}
               label={cat}
               isActive={selectedCategory === cat}
-              onPress={() => setSelectedCategory(cat)}
+              onPress={() => handleCategoryChange(cat)}
             />
           ))}
         </ScrollView>
@@ -241,6 +262,8 @@ export default function HomeScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
         scrollEnabled={true}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );

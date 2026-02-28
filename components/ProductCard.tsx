@@ -69,9 +69,9 @@ export function ProductCard({
             />
           </Pressable>
         )}
-        {product.bpomNo && (
-          <View style={[styles.bpomBadge, { backgroundColor: colors.success }]}>
-            <Text style={styles.bpomText}>BPOM</Text>
+        {product.shopeeProductCode && (
+          <View style={[styles.bpomBadge, { backgroundColor: colors.primary }]}>
+            <Text style={styles.bpomText}>Shopee</Text>
           </View>
         )}
       </View>

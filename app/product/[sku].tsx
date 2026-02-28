@@ -18,7 +18,7 @@ import { useStore } from "@/lib/store";
 import { t, formatPrice } from "@/lib/i18n";
 import { getProductsBySku } from "@/lib/products";
 
-type SectionKey = "description" | "nutrition" | "ingredients" | "usage" | "warnings";
+type SectionKey = "details" | "variants";
 
 export default function ProductDetailScreen() {
   const { sku } = useLocalSearchParams<{ sku: string }>();
@@ -27,7 +27,7 @@ export default function ProductDetailScreen() {
   const colors = getColors(isDark);
   const insets = useSafeAreaInsets();
   const { language, addToCart, toggleWishlist, isInWishlist } = useStore();
-  const [expandedSection, setExpandedSection] = useState<SectionKey | null>("description");
+  const [expandedSection, setExpandedSection] = useState<SectionKey | null>("details");
   const [quantity, setQuantity] = useState(1);
 
   const product = useMemo(() => getProductsBySku(sku || ""), [sku]);
@@ -60,14 +60,6 @@ export default function ProductDetailScreen() {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     router.push("/checkout");
   };
-
-  const sections: { key: SectionKey; titleKey: string; content: string }[] = [
-    { key: "description", titleKey: "product.description", content: product.description },
-    { key: "nutrition", titleKey: "product.nutrition", content: product.nutritionFacts },
-    { key: "ingredients", titleKey: "product.ingredients", content: product.ingredients },
-    { key: "usage", titleKey: "product.usage", content: product.usageInstructions },
-    { key: "warnings", titleKey: "product.warnings", content: product.warnings },
-  ];
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
@@ -130,21 +122,15 @@ export default function ProductDetailScreen() {
                 </Text>
               </View>
             )}
-            {product.bpomNo && (
+            {product.shopeeProductCode && (
               <View style={[styles.badge, { backgroundColor: colors.primary + "15", borderColor: colors.primary }]}>
-                <Ionicons name="shield-checkmark" size={14} color={colors.primary} />
-                <Text style={[styles.badgeText, { color: colors.primary }]}>
-                  {product.bpomNo}
-                </Text>
+                <Ionicons name="storefront-outline" size={14} color={colors.primary} />
+                <Text style={[styles.badgeText, { color: colors.primary }]}>Shopee</Text>
               </View>
             )}
-            {product.isHalal && (
-              <View style={[styles.badge, { backgroundColor: colors.success + "15", borderColor: colors.success }]}>
-                <Text style={[styles.badgeText, { color: colors.success }]}>
-                  {t("product.halal", language)}
-                </Text>
-              </View>
-            )}
+            <View style={[styles.badge, { backgroundColor: colors.cta + "15", borderColor: colors.cta }]}>
+              <Text style={[styles.badgeText, { color: colors.cta }]}>{product.category}</Text>
+            </View>
           </View>
 
           <View style={[styles.infoRow, { borderColor: colors.borderLight }]}>
@@ -159,44 +145,95 @@ export default function ProductDetailScreen() {
             </View>
             <View style={[styles.infoSep, { backgroundColor: colors.border }]} />
             <View style={styles.infoItem}>
-              <Ionicons name="globe-outline" size={18} color={colors.textSecondary} />
+              <Ionicons name="cube-outline" size={18} color={colors.textSecondary} />
               <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>
-                {t("product.origin", language)}
+                {language === "id" ? "Ukuran" : "Size"}
               </Text>
-              <Text style={[styles.infoValue, { color: colors.text }]}>{product.origin}</Text>
+              <Text style={[styles.infoValue, { color: colors.text }]}>{product.size || "-"}</Text>
             </View>
             <View style={[styles.infoSep, { backgroundColor: colors.border }]} />
             <View style={styles.infoItem}>
               <Ionicons name="pricetag-outline" size={18} color={colors.textSecondary} />
               <Text style={[styles.infoLabel, { color: colors.textSecondary }]}>SKU</Text>
-              <Text style={[styles.infoValue, { color: colors.text }]}>{product.sku}</Text>
+              <Text style={[styles.infoValue, { color: colors.text }]} numberOfLines={1}>{product.sku}</Text>
             </View>
           </View>
 
-          {sections.map((section) => (
-            <View key={section.key} style={[styles.accordionItem, { borderColor: colors.borderLight }]}>
+          <View style={[styles.accordionItem, { borderColor: colors.borderLight }]}>
+            <Pressable
+              onPress={() => setExpandedSection(expandedSection === "details" ? null : "details")}
+              style={styles.accordionHeader}
+            >
+              <Text style={[styles.accordionTitle, { color: colors.text }]}>
+                {language === "id" ? "Detail Produk" : "Product Details"}
+              </Text>
+              <Ionicons
+                name={expandedSection === "details" ? "chevron-up" : "chevron-down"}
+                size={20}
+                color={colors.textSecondary}
+              />
+            </Pressable>
+            {expandedSection === "details" && (
+              <View style={styles.detailsContent}>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>
+                    {language === "id" ? "Merek" : "Brand"}
+                  </Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{product.brand}</Text>
+                </View>
+                <View style={styles.detailRow}>
+                  <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>
+                    {language === "id" ? "Kategori" : "Category"}
+                  </Text>
+                  <Text style={[styles.detailValue, { color: colors.text }]}>{product.category}</Text>
+                </View>
+                {product.size ? (
+                  <View style={styles.detailRow}>
+                    <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>
+                      {language === "id" ? "Ukuran" : "Size"}
+                    </Text>
+                    <Text style={[styles.detailValue, { color: colors.text }]}>{product.size}</Text>
+                  </View>
+                ) : null}
+                {product.flavors.length > 0 && (
+                  <View style={styles.detailRow}>
+                    <Text style={[styles.detailLabel, { color: colors.textSecondary }]}>
+                      {language === "id" ? "Rasa" : "Flavors"}
+                    </Text>
+                    <Text style={[styles.detailValue, { color: colors.text }]}>{product.flavors.join(", ")}</Text>
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+
+          {product.variants.length > 0 && (
+            <View style={[styles.accordionItem, { borderColor: colors.borderLight }]}>
               <Pressable
-                onPress={() =>
-                  setExpandedSection(expandedSection === section.key ? null : section.key)
-                }
+                onPress={() => setExpandedSection(expandedSection === "variants" ? null : "variants")}
                 style={styles.accordionHeader}
               >
                 <Text style={[styles.accordionTitle, { color: colors.text }]}>
-                  {t(section.titleKey, language)}
+                  {language === "id" ? `Varian (${product.variants.length})` : `Variants (${product.variants.length})`}
                 </Text>
                 <Ionicons
-                  name={expandedSection === section.key ? "chevron-up" : "chevron-down"}
+                  name={expandedSection === "variants" ? "chevron-up" : "chevron-down"}
                   size={20}
                   color={colors.textSecondary}
                 />
               </Pressable>
-              {expandedSection === section.key && (
-                <Text style={[styles.accordionContent, { color: colors.textSecondary }]}>
-                  {section.content}
-                </Text>
+              {expandedSection === "variants" && (
+                <View style={styles.variantsGrid}>
+                  {product.variants.map((v, idx) => (
+                    <View key={idx} style={[styles.variantChip, { backgroundColor: colors.inputBg, borderColor: colors.borderLight }]}>
+                      <Text style={[styles.variantType, { color: colors.textSecondary }]}>{v.type}</Text>
+                      <Text style={[styles.variantName, { color: colors.text }]}>{v.name}</Text>
+                    </View>
+                  ))}
+                </View>
               )}
             </View>
-          ))}
+          )}
         </View>
       </ScrollView>
 
@@ -394,6 +431,47 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
     marginTop: 8,
+  },
+  detailsContent: {
+    marginTop: 8,
+    gap: 8,
+  },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  detailLabel: {
+    fontSize: 13,
+    flex: 1,
+  },
+  detailValue: {
+    fontSize: 13,
+    fontWeight: "600" as const,
+    flex: 2,
+    textAlign: "right",
+  },
+  variantsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginTop: 10,
+  },
+  variantChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  variantType: {
+    fontSize: 10,
+    textTransform: "uppercase" as const,
+    letterSpacing: 0.5,
+    marginBottom: 2,
+  },
+  variantName: {
+    fontSize: 13,
+    fontWeight: "500" as const,
   },
   stickyBar: {
     flexDirection: "row",
