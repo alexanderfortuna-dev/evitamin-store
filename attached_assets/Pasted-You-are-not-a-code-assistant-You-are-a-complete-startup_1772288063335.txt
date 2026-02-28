@@ -1,0 +1,268 @@
+You are not a code assistant.
+You are a complete startup engineering team: CTO, Product Manager, UX Designer, Backend Architect, Mobile Engineer, DevOps, and QA.
+
+Your task: BUILD A FULLY WORKING PRODUCTION-READY MOBILE E-COMMERCE APP.
+
+App Name: eVitamin Store
+
+Goal:
+Create the largest supplements marketplace app in Indonesia (scalable to Southeast Asia).
+The experience must feel like:
+- Zalora level shopping comfort
+- iHerb level product clarity
+- Decathlon level simplicity
+- Shopee level checkout speed
+
+The output must NOT be a demo.
+The output must be a working deployable application.
+
+====================================================
+1. PLATFORM & ARCHITECTURE DECISION (YOU CHOOSE BEST)
+====================================================
+
+Mobile First Priority:
+- Android & iOS app (single codebase)
+- Responsive tablet & desktop web
+
+Choose stack automatically based on reliability:
+
+Mobile:
+React Native + Expo
+
+Backend:
+Node.js + NestJS
+
+Database:
+PostgreSQL
+
+Admin Dashboard:
+React + Tailwind
+
+Caching:
+Redis
+
+Storage:
+Cloud storage abstraction (S3 compatible)
+
+Provide Docker setup.
+
+====================================================
+2. CORE UX PRINCIPLE (CRITICAL)
+====================================================
+
+Design must reduce thinking.
+
+User must:
+Open → find product → checkout in under 20 seconds.
+
+NO clutter.
+NO unnecessary forms.
+NO multi page checkout.
+
+Use ONE PAGE CHECKOUT.
+
+Guest checkout allowed.
+
+Account optional but encouraged after payment.
+
+Sticky add-to-cart button on product page.
+Persistent floating cart button.
+
+Large tap targets for thumb use.
+
+====================================================
+3. LANGUAGE SYSTEM (FULL I18N)
+====================================================
+
+Full bilingual system:
+
+Bahasa Indonesia (default)
+English
+
+Every text must be translatable:
+Buttons
+Errors
+Notifications
+Emails
+Invoices
+Admin panel
+
+Provide translation files structure.
+
+====================================================
+4. PAYMENT GATEWAY (INDONESIA FULL SUPPORT)
+====================================================
+
+Integrate using adapter pattern:
+
+Xendit
+Midtrans
+DOKU
+iPay88
+
+Must support:
+Virtual Account
+Credit/Debit Card
+QRIS
+GoPay
+OVO
+DANA
+ShopeePay
+
+Payment must be:
+Asynchronous webhook confirmed
+Idempotent safe retry
+Anti double charge
+
+Create sandbox mode for testing.
+
+====================================================
+5. SHIPPING & DELIVERY
+====================================================
+
+Support:
+GoSend Instant
+GrabExpress
+JNE
+J&T
+SiCepat
+POS Indonesia
+
+System must calculate shipping automatically.
+
+User flow:
+Select address → choose courier → see ETA → checkout.
+
+====================================================
+6. PRODUCT SYSTEM (SUPPLEMENT SPECIFIC)
+====================================================
+
+Product must support:
+
+Multiple variants (size, flavor)
+Nutrition facts panel
+Ingredients
+Usage instructions
+Warnings
+BPOM number
+Halal status
+Country of origin
+Expiration date
+Batch tracking
+
+Allow bundle products.
+
+====================================================
+7. FEATURES
+====================================================
+
+Customer App:
+Home discovery feed
+Smart search with typo tolerance
+Filter by brand, category, price, ingredient
+Wishlist
+Subscriptions (repeat purchase monthly)
+Reviews & ratings
+Order tracking
+Push notifications
+Promo codes
+Flash sale system
+
+Admin:
+Product management
+Inventory
+Orders
+Refunds
+Coupons
+Banner CMS
+User management
+
+====================================================
+8. DATABASE MODEL
+====================================================
+
+Design complete relational schema including:
+
+users
+addresses
+products
+product_variants
+categories
+brands
+orders
+order_items
+payments
+shipments
+reviews
+coupons
+subscriptions
+notifications
+translations
+
+Include migration scripts.
+
+====================================================
+9. PERFORMANCE
+====================================================
+
+Must handle:
+10,000 concurrent users minimum
+
+Include:
+Pagination
+Caching
+Image optimization
+Lazy loading
+
+====================================================
+10. UI COLOR PSYCHOLOGY
+====================================================
+
+Use this palette:
+
+Background: #F7FAFF
+Primary Trust: #0B3D91
+CTA Buy Button: #FF6A00
+Success: #16A34A
+Text: #1F2937
+Card: #FFFFFF
+
+Provide dark mode automatically.
+
+====================================================
+11. ANALYTICS
+====================================================
+
+Track events:
+View product
+Add to cart
+Checkout started
+Payment success
+Repeat purchase
+
+====================================================
+12. OUTPUT REQUIREMENT
+====================================================
+
+You must generate:
+
+Full project folder structure
+Mobile app code
+Backend code
+Admin panel
+API documentation
+Environment variable template
+Docker setup
+Seed data
+Deployment instructions
+
+====================================================
+FINAL RULE
+====================================================
+
+Do NOT generate partial snippets.
+Generate a runnable system.
+Explain how to run locally.
+Explain how to deploy publicly.
+
+The result must be a real app skeleton ready for production.

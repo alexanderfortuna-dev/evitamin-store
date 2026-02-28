@@ -1,0 +1,56 @@
+SEEDER MASTER PROMPT — eVitamin Store (paste ke Replit AI / developer)
+
+You are a data-engineering script generator. Produce a runnable Node.js script (single-file or small module) named `seed_100_skus.js` with the following behavior:
+
+1) INPUT:
+- Accept environment variables or CLI flags:
+  - AMAZON_PA_ACCESS_KEY, AMAZON_PA_SECRET_KEY, AMAZON_PA_ASSOC_TAG (optional)
+  - IHERB_API_KEY (optional)
+  - EXCHANGE_RATE (optional; if omitted, script fetches real-time USD→IDR using exchangerate.host)
+  - OUTPUT_DIR (default: ./seed_output)
+  - MODE = 'api' or 'mock' (default 'api' if keys exist; fallback to 'mock')
+
+2) SOURCE:
+- If AMAZON_PA_ACCESS_KEY present:
+  - Query Amazon Product Advertising API for top-selling supplements in categories: Protein, Pre-workout, Creatine, BCAA, Multivitamin, Nootropics, Weight Gainers, Joint Support, Omega, Testo Support.
+  - Collect for each product: title, brand, ASIN, price_usd (or list price), images (main + thumbnails), description, nutrition facts (if available), dimensions (length,width,height) or weight (grams) if available, and country_of_origin.
+- If IHERB_API_KEY present:
+  - Pull products from iHerb similar categories and merge, prioritizing top sellers until 100 SKUs collected.
+- If neither API key present:
+  - Generate 100 realistic mock SKUs using common supplement naming conventions and realistic numeric fields (price_usd between $8–$120 depending on category), and use placeholder images from https://picsum.photos/ or other license-free source.
+
+3) DATA NORMALIZATION:
+- For each SKU compute:
+  - price_idr = ROUND(price_usd * EXCHANGE_RATE)
+  - weight_grams (if only dimensions available, estimate volumetric weight using LxWxH (cm) / 5000 rule)
+  - volumetric_weight_kg = max(actual_weight_kg, volumetric_weight_kg_estimate)
+  - shipping_size = {length_cm, width_cm, height_cm}
+- Add BPOM_no field (if available) else NULL
+- Tag: category, subcategory, flavors (if any), variant_name, sku_code (generate unique)
+- images_local_paths: for API mode, download images to OUTPUT_DIR/images/<sku>.jpg; for mock mode, save placeholder urls
+
+4) SHIPPING DATA:
+- Attach a sample per-courier shippingRateEstimate function that:
+  - Accepts origin_postal_code (e.g. 80361 Bali) and destination_postal_code
+  - Uses product weight (grams) + volumetric weight
+  - Returns sample costs for JNE, J&T, SiCepat, GoSend (instant estimated surcharge), GrabExpress
+  - Note: Use mocked courier rate tables stored in `seed_output/courier_rates_example.json` and mark them as "sandbox" so dev can replace with real courier APIs.
+
+5) OUTPUT:
+- Save seed_output/products.json (array of 100 product objects with all fields)
+- Save seed_output/products.csv (columns: sku, title, brand, category, price_usd, price_idr, weight_g, length_cm, width_cm, height_cm, volumetric_weight_g, bpom_no, image_paths_comma_separated, description)
+- Save downloaded images to seed_output/images/
+- Save seed_output/courier_rates_example.json
+- Print summary statistics: total SKUs, avg price_usd, avg price_idr, total download size for images
+
+6) LOGS & ERRORS:
+- Provide detailed logging, retry logic for API calls, and polite rate-limiting (sleep between requests).
+- If API keys missing, print clear instructions how to obtain Amazon Product Advertising API keys and how to re-run in API mode.
+
+7) RUNNABLE:
+- Provide package.json with dependencies (node-fetch or axios, csv-writer, dotenv) and README snippet showing:
+  - `npm install`
+  - `EXCHANGE_RATE=16780 node seed_100_skus.js`  (or with keys)
+- Provide sample cron job or script to re-run price conversion daily.
+
+End of spec. Generate the Node.js script and accompanying README now.

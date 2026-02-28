@@ -1,0 +1,68 @@
+Estimasi biaya implementasi (IDR) — dua jalur
+
+Saya buat estimasi realistis biaya untuk membuat fitur ini production-ready (angka kasar, bisa disesuaikan).
+
+A) Seeder script + CSV/JSON export + mock courier table — single deliverable
+
+Deliverable: seed_100_skus.js, images folder, CSV/JSON, README
+
+Waktu: ~8–20 jam kerja
+
+Estimasi biaya freelance/dev lokal: IDR 3.000.000 – 8.000.000
+
+Cocok jika kamu: ingin cepat isi 100 SKU dan edit sendiri selanjutnya.
+
+B) Full integration ke eVitamin app (backend + admin import + shipping adapter + PGW sandbox wiring + QA) — production-grade
+
+Deliverable: Seeder + import job + admin UI import flow + shipping estimator + price conversion cron + basic QA
+
+Waktu: ~3–6 minggu (2–4 dev weeks)
+
+Estimasi biaya: IDR 60.000.000 – 180.000.000 (tergantung pengalaman developer/agency, quality, dan apakah menggunakan paid APIs)
+
+Breakdown (perkiraan):
+
+Backend dev (API adapters, import job, DB migrations): 30–60 juta
+
+Mobile + Admin connector + UX polish for product listing: 20–50 juta
+
+QA, testing, deployment, infra setup (Docker, CI): 10–30 juta
+
+Cocok jika kamu mau deploy MVP langsung dengan 100 SKU, shipping calc, dan PGW sandbox.
+
+Catatan: angka di atas bergantung pada skill dev, kontrak (fixed price vs hourly), dan apakah kamu sudah punya infra (hosting, db). Saya gunakan rate pasar developer senior lokal/agency. Kalau pakai offshore developer harganya bisa lebih rendah/tapi koordinasi tambah waktu.
+
+6) Implementasi perhitungan berat & ongkir
+
+Script seeder akan:
+
+gunakan actual_weight_g apabila tersedia
+
+jika tidak ada, gunakan volumetric weight = (L × W × H) / 5000 (cm) → kg, lalu bandingkan actual vs volumetric and pakai yang lebih besar
+
+hitung ongkos tiap kurir (mock table) = base_rate + per_kg_rate × weight_kg + surcharges (remote area)
+
+sertakan field shipping_dimensions_cm + volumetric_weight_kg dan shipping_cost_estimates per courier
+
+Contoh (mock):
+
+JNE REG: base 15k + 6k per kg → paket 2.4 kg = 15k + (2.4×6k)=15k+14.4k=29.4k → dibulatkan => 29k–30k
+
+GoSend Instant: per km + instant surcharge (mock)
+
+Script akan menaruh shipping_estimates di JSON; admin bisa memilih untuk menampilkan estimasi realtime atau hide until checkout.
+
+7) Langkah cepat yang bisa kamu lakukan sekarang (recommended)
+
+Pilih mode:
+
+MODE A (Free/Immediate): jalankan MASTER PROMPT seeder di Replit dengan MODE=mock → dapat 100 SKU mock + images placeholder untuk langsung import ke app. (CEPAT, murah)
+
+MODE B (Production): siapkan Amazon Product Advertising API keys +/atau iHerb API → jalankan seeder api mode → dapat real images & metadata.
+
+Kalau mau saya bantu membuat file seed_100_skus.js sekarang (saya bisa generate script code di chat) — ketik "Buatkan script seeder sekarang (mock mode)".
+
+Jika kamu ingin estimation + invoice untuk hire developer, saya buatkan SOW singkat + daftar task/ milestones supaya gampang dikirim ke agency.
+
+8) Saya sertakan juga continuation prompt singkat untuk Replit agar langsung lanjut dari MASTER PROMPT yang sudah kamu pakai (untuk generate seeder + 100 SKUs mock). Paste ini setelah MASTER PROMPT asli:
+CONTINUATION: Now generate the Node.js seeder script exactly as specified previously. Use 'mock
