@@ -8,11 +8,11 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - **Backend**: Express.js on port 5000 (landing page + API)
 - **Frontend Dev Server**: Expo on port 8081
 - **State Management**: React Context (StoreProvider) + AsyncStorage for persistence
-- **Data**: 100 mock product SKUs generated procedurally across 10 supplement categories
+- **Data**: 100 real Amazon top-seller products across 10 supplement categories (real brand names, descriptions, ratings)
 
 ## Key Files
 - `lib/store.tsx` — Global state: cart, wishlist, language (persisted via AsyncStorage)
-- `lib/products.ts` — 100 seeded product SKUs with deterministic generation
+- `lib/products.ts` — 100 real Amazon best-seller supplement products with real brand data
 - `lib/i18n.ts` — Bilingual translations (ID/EN)
 - `lib/query-client.ts` — React Query client + API helpers
 - `constants/colors.ts` — Theme colors (light/dark) with eVitamin brand palette
@@ -38,7 +38,7 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - Card: #FFFFFF
 
 ## Features
-- 100 mock supplement SKUs across 10 categories
+- 100 real Amazon top-seller supplements (ON Gold Standard, Dymatize ISO100, THORNE, Nordic Naturals, etc.) across 10 categories: Protein, Pre-workout, Creatine, BCAA & Aminos, Multivitamin, Omega & Fish Oil, Weight Gainers, Joint & Collagen, Vitamin D & K, Probiotics & Gut
 - Cart with quantity management (persisted)
 - Wishlist with heart toggle (persisted)
 - Bilingual ID/EN toggle

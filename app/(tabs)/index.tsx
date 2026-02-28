@@ -28,13 +28,13 @@ const categoryIcons: Record<string, string> = {
   Protein: "barbell-outline",
   "Pre-workout": "flash-outline",
   Creatine: "fitness-outline",
-  BCAA: "water-outline",
+  "BCAA & Aminos": "water-outline",
   Multivitamin: "medkit-outline",
-  Nootropics: "bulb-outline",
+  "Omega & Fish Oil": "fish-outline",
   "Weight Gainers": "trending-up-outline",
-  "Joint Support": "body-outline",
-  Omega: "fish-outline",
-  "Testo Support": "shield-outline",
+  "Joint & Collagen": "body-outline",
+  "Vitamin D & K": "sunny-outline",
+  "Probiotics & Gut": "leaf-outline",
 };
 
 export default function HomeScreen() {

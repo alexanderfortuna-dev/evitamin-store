@@ -65,6 +65,16 @@ const translations: Record<string, Record<Language, string>> = {
   "currency.idr": { id: "Rp", en: "Rp" },
   "language.switch": { id: "English", en: "Bahasa" },
   "settings": { id: "Pengaturan", en: "Settings" },
+  "cat.Protein": { id: "Protein", en: "Protein" },
+  "cat.Pre-workout": { id: "Pre-workout", en: "Pre-workout" },
+  "cat.Creatine": { id: "Creatine", en: "Creatine" },
+  "cat.BCAA & Aminos": { id: "BCAA & Amino", en: "BCAA & Aminos" },
+  "cat.Multivitamin": { id: "Multivitamin", en: "Multivitamin" },
+  "cat.Omega & Fish Oil": { id: "Omega & Minyak Ikan", en: "Omega & Fish Oil" },
+  "cat.Weight Gainers": { id: "Penambah Berat", en: "Weight Gainers" },
+  "cat.Joint & Collagen": { id: "Sendi & Kolagen", en: "Joint & Collagen" },
+  "cat.Vitamin D & K": { id: "Vitamin D & K", en: "Vitamin D & K" },
+  "cat.Probiotics & Gut": { id: "Probiotik & Usus", en: "Probiotics & Gut" },
 };
 
 export function t(key: string, lang: Language): string {
