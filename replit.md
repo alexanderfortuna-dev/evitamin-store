@@ -27,7 +27,9 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - `app/(tabs)/cart.tsx` — Shopping cart with quantity controls
 - `app/product/[sku].tsx` — Product detail with details/variants accordion, sticky buy bar
 - `app/category/[name].tsx` — Category browse with infinite scroll
-- `app/checkout.tsx` — One-page checkout (address, courier, payment)
+- `app/checkout.tsx` — One-page checkout with Midtrans payment gateway integration
+- `server/midtrans.ts` — Midtrans Snap API client (transaction creation, status check)
+- `server/routes.ts` — Backend API routes (Midtrans config, create-transaction, status, notification webhook)
 
 ## Data Source
 - Excel file: `attached_assets/Database_Replit_AI_Clean_1772301588802.xlsx`
@@ -54,7 +56,11 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - Bilingual ID/EN toggle
 - Dark mode support
 - One-page checkout with courier selection (JNE, J&T, SiCepat, GoSend, GrabExpress)
-- Payment method selection (VA, QRIS, E-Wallet, Card)
+- Midtrans payment gateway integration (production mode)
+  - Supports: VA Bank (BCA, BNI, BRI, Mandiri, CIMB, Permata), QRIS, GoPay, ShopeePay, Credit/Debit Card, Alfamart, Indomaret
+  - Backend creates Snap transaction, redirects user to Midtrans payment page
+  - Webhook endpoint for payment notifications at POST /api/midtrans/notification
+  - Environment variables: MIDTRANS_SERVER_KEY, MIDTRANS_CLIENT_KEY, MIDTRANS_IS_PRODUCTION
 - Free shipping over Rp 500,000
 - Shopee badge, product category badges, product ratings
 - Product variants display (flavor, color, size)
@@ -66,3 +72,4 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - expo-haptics (tactile feedback)
 - expo-linear-gradient (banner gradient)
 - @react-native-async-storage/async-storage (persistence)
+- midtrans-client (Midtrans payment gateway SDK)
