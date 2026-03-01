@@ -1,0 +1,79 @@
+Ini dia, versi final yang tinggal kamu **copy–paste** ke Replit AI:
+
+***
+
+**FINAL MASTER PROMPT – E VITAMIN STORE**
+
+> Kamu adalah senior full‑stack engineer yang melanjutkan development aplikasi saya di Replit.  
+> **JANGAN** membuat project baru dan **JANGAN** menghapus file yang sudah ada, hanya lanjutkan dan rapikan kode di project ini.
+> 
+> ## TUJUAN UTAMA  
+> Menyelesaikan dan merapikan aplikasi **eVitamin Store** supaya:
+> - Bisa demo dengan lancar.  
+> - Owner/admin bisa mengelola produk.  
+> - User biasa bisa daftar, login, dan melihat katalog.
+> 
+> ## 1. ARSITEKTUR & DATABASE (WAJIB IKUTI)  
+> - Gunakan database produk yang sudah ada (hasil impor dari `Database_Replit_AI_Clean.xlsx`) dengan struktur:  
+>   - **Products**: `product_id, sku, brand, name, size, category, shopee_product_code, image_url, has_variants`.  
+>   - **Variants**: `variant_id, product_id, variant_type, variant_name, shopee_product_code, image_url`.  
+> - Jangan mengubah atau menghapus kolom inti ini. Jika perlu kolom baru (misalnya `price`, `stock`, `is_active`), tambahkan dengan cara yang tidak merusak data yang sudah ada.
+> 
+> ## 2. AUTH & ROLE  
+> - Implementasikan sistem role: `owner` / `admin` dan `user`.  
+> - **Atur auth sesuai setup project sekarang** (kalau sudah ada Replit Auth atau auth custom, gunakan itu, jangan ganti sistem auth).
+>   - Jika menggunakan auth custom, buat satu akun owner default:  
+>     - Email: `owner@evitamin.store`  
+>     - Password: `Owner123!`  
+>   - Pastikan:
+>     - Owner/admin bisa akses halaman admin.  
+>     - User biasa tidak bisa akses halaman admin.
+> - Buat middleware / guard yang mengarahkan user tanpa hak akses kembali ke halaman login atau home.
+> 
+> ## 3. HALAMAN & FITUR YANG WAJIB ADA  
+> 1. **Halaman Home / Katalog Publik**  
+>    - Menampilkan daftar produk dengan: foto, nama, brand, ukuran, kategori, harga (jika ada).  
+>    - Search dan filter minimal berdasarkan kategori dan brand.  
+>    - Klik produk → halaman detail produk (termasuk varian rasa/warna jika `has_variants = true`).
+> 
+> 2. **Halaman Admin / Dashboard Owner**  
+>    - Route jelas, misalnya `/admin` atau `/dashboard`.  
+>    - Menu minimal:  
+>      - Products → list produk, tombol **Add**, **Edit**, **Delete**.  
+>      - Variants dikelola di dalam form edit produk (CRUD varian yang terkait dengan `product_id` tersebut).  
+>    - Semua aksi CRUD harus terhubung ke tabel **Products** dan **Variants** di database.
+> 
+> 3. **Halaman Auth**  
+>    - Halaman **Login** yang jelas (untuk owner/admin dan user).  
+>    - Halaman **Signup / Register** untuk user biasa (kecuali seluruh login dihandle penuh oleh Replit Auth, sesuaikan dengan project).  
+>    - Tombol **Logout** yang bekerja dengan benar dan membersihkan session.
+> 
+> ## 4. UX UNTUK DEMO  
+> - Buat navigasi yang sangat jelas (navbar atau sidebar) berisi link: `Home`, `Catalog`, `Admin`, `Login`, `Logout`, dan `Profile` jika perlu.  
+> - Tambahkan teks bantu kecil di UI, misalnya:  
+>   - Di halaman login: “Owner gunakan akun owner@evitamin.store untuk akses admin dashboard.”  
+>   - Di halaman admin: “Di sini owner dapat menambah, mengedit, dan menghapus produk.”  
+> - Hindari error di browser console ketika app dijalankan di mode development.
+> 
+> ## 5. KODE & FRAMEWORK  
+> - Gunakan framework yang sudah dipakai project ini (jangan diganti), hanya rapikan.  
+> - Refactor seperlunya agar struktur komponen lebih rapi, tetapi jangan memecah ke terlalu banyak file baru yang tidak perlu.  
+> - Tambahkan komentar singkat di 3 area penting saja:
+>   1. File/komponen utama untuk **auth & role**.  
+>   2. File/komponen utama untuk **CRUD produk & varian**.  
+>   3. Entry point aplikasi / routing utama.
+> 
+> ## 6. HASIL YANG HARUS KAMU JELASKAN KE SAYA (DI AKHIR)  
+> Setelah selesai mengedit kode, jelaskan dalam bentuk checklist:
+> 1. **Cara menjalankan app di Replit** (perintah di Console yang harus saya jalankan).  
+> 2. **Cara login sebagai owner/admin** (langkah dan kredensial yang dipakai).  
+> 3. **Cara sign up & login sebagai user biasa**.  
+> 4. **Cara menambah, mengedit, dan menghapus produk & varian** dari halaman admin.  
+> 5. Daftar halaman utama dan URL‑nya (Home, Catalog, Product Detail, Admin, Login, Signup, dll).  
+> 6. Jika ada fitur yang belum sempat diselesaikan, jelaskan batasannya dan apa yang perlu dilakukan selanjutnya.
+> 
+> Fokus pada perubahan yang paling efisien dan minimal terhadap struktur yang sudah ada, supaya penggunaan compute dan AI credit seminimal mungkin namun aplikasi tetap siap untuk demo dan digunakan operasional.
+
+***
+
+Tinggal paste prompt ini ke Replit AI (Ask / Agent) di project apps kamu, lalu jalankan sekali. Kalau kamu kasih tahu framework‑nya (Next/Expo dll), nanti saya bisa bantu tweak 1–2 baris supaya makin presisi sebelum kamu pakai.
