@@ -29,7 +29,9 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - `app/category/[name].tsx` — Category browse with infinite scroll
 - `app/checkout.tsx` — One-page checkout with Midtrans payment gateway integration
 - `server/midtrans.ts` — Midtrans Snap API client (transaction creation, status check)
-- `server/routes.ts` — Backend API routes (Midtrans config, create-transaction, status, notification webhook)
+- `server/routes.ts` — Backend API routes (Midtrans config, create-transaction, status, notification webhook, order history)
+- `server/db.ts` — PostgreSQL database connection via Drizzle ORM
+- `shared/schema.ts` — Database schema: users, orders, order_items tables
 
 ## Data Source
 - Excel file: `attached_assets/Database_Replit_AI_Clean_1772301588802.xlsx`
@@ -73,3 +75,10 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - expo-linear-gradient (banner gradient)
 - @react-native-async-storage/async-storage (persistence)
 - midtrans-client (Midtrans payment gateway SDK)
+- drizzle-orm + pg (PostgreSQL ORM)
+
+## Database (PostgreSQL)
+- Provisioned via Replit built-in PostgreSQL
+- Tables: `users`, `orders`, `order_items`
+- Orders saved on create-transaction, status updated on Midtrans webhook notification
+- API endpoints: GET /api/orders (all orders or filter by ?phone=), GET /api/orders/:orderId

@@ -78,6 +78,7 @@ export default function CheckoutScreen() {
         name: item.product.title.substring(0, 50),
         price: Math.round(item.product.priceIdr),
         quantity: item.quantity,
+        imageUrl: item.product.imagePaths?.[0] || null,
       }));
 
       const response = await apiRequest("POST", "/api/midtrans/create-transaction", {
