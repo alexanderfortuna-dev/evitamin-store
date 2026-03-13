@@ -8,7 +8,15 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface AuthUser {
+  id: string;
+  name: string;
+  phone: string;
+  role: string;
+}
+
 interface StoreContextValue {
+  // Cart
   cart: CartItem[];
   wishlist: string[];
   language: Language;
@@ -21,6 +29,12 @@ interface StoreContextValue {
   toggleWishlist: (sku: string) => void;
   isInWishlist: (sku: string) => boolean;
   setLanguage: (lang: Language) => void;
+  // Auth
+  authUser: AuthUser | null;
+  authToken: string | null;
+  isAuthLoaded: boolean;
+  setAuth: (user: AuthUser, token: string) => void;
+  logout: () => void;
 }
 
 const StoreContext = createContext<StoreContextValue | null>(null);
@@ -28,25 +42,37 @@ const StoreContext = createContext<StoreContextValue | null>(null);
 const CART_KEY = "@evitamin_cart";
 const WISHLIST_KEY = "@evitamin_wishlist";
 const LANG_KEY = "@evitamin_lang";
+const AUTH_KEY = "@evitamin_auth";
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [language, setLanguageState] = useState<Language>("id");
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [isAuthLoaded, setIsAuthLoaded] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
-        const [cartData, wishData, langData] = await Promise.all([
+        const [cartData, wishData, langData, authData] = await Promise.all([
           AsyncStorage.getItem(CART_KEY),
           AsyncStorage.getItem(WISHLIST_KEY),
           AsyncStorage.getItem(LANG_KEY),
+          AsyncStorage.getItem(AUTH_KEY),
         ]);
         if (cartData) setCart(JSON.parse(cartData));
         if (wishData) setWishlist(JSON.parse(wishData));
         if (langData) setLanguageState(langData as Language);
+        if (authData) {
+          const parsed = JSON.parse(authData);
+          setAuthUser(parsed.user);
+          setAuthToken(parsed.token);
+        }
       } catch (e) {
         console.error("Failed to load store:", e);
+      } finally {
+        setIsAuthLoaded(true);
       }
     })();
   }, []);
@@ -109,6 +135,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     AsyncStorage.setItem(LANG_KEY, lang).catch(() => {});
   }, []);
 
+  const setAuth = useCallback((user: AuthUser, token: string) => {
+    setAuthUser(user);
+    setAuthToken(token);
+    AsyncStorage.setItem(AUTH_KEY, JSON.stringify({ user, token })).catch(() => {});
+  }, []);
+
+  const logout = useCallback(() => {
+    setAuthUser(null);
+    setAuthToken(null);
+    AsyncStorage.removeItem(AUTH_KEY).catch(() => {});
+  }, []);
+
   const cartTotal = useMemo(
     () => cart.reduce((sum, item) => sum + item.product.priceIdr * item.quantity, 0),
     [cart]
@@ -133,8 +171,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       toggleWishlist,
       isInWishlist,
       setLanguage,
+      authUser,
+      authToken,
+      isAuthLoaded,
+      setAuth,
+      logout,
     }),
-    [cart, wishlist, language, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount, toggleWishlist, isInWishlist, setLanguage]
+    [cart, wishlist, language, addToCart, removeFromCart, updateQuantity, clearCart,
+     cartTotal, cartCount, toggleWishlist, isInWishlist, setLanguage,
+     authUser, authToken, isAuthLoaded, setAuth, logout]
   );
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

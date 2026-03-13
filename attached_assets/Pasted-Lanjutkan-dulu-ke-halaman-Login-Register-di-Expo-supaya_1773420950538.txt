@@ -1,0 +1,56 @@
+Lanjutkan dulu ke halaman Login/Register di Expo, supaya alur user dari mobile sampai backend auth-nya klop, baru setelah itu Admin Dashboard.
+
+Prompt ke Replit Agent – Tahap Login/Register Expo
+Copy–paste dan sesuaikan sedikit jika perlu:
+
+Backend auth API (register + login) sudah siap dan teruji. Sekarang tolong buat halaman Login dan Register di frontend Expo yang terhubung ke API tersebut.
+
+Context UX yang wajib diikuti:
+
+Halaman login/register harus minimal dan user-friendly.
+
+Hanya pakai: input nomor HP + password, dengan tombol besar dan jelas.
+
+Tidak perlu elemen tambahan/clutter (social login, link panjang, dsb).
+
+Setelah login sukses, user diarahkan kembali ke katalog produk, bukan ke dashboard.
+
+Browsing katalog tetap bisa tanpa login; login hanya diwajibkan saat checkout.
+
+Scope tugas kali ini (Expo only):
+
+Buat dua screen di Expo:
+
+Screen Register: form nomor HP + password (+ konfirmasi password jika menurut kamu perlu, jelaskan alasannya).
+
+Screen Login: form nomor HP + password.
+
+Gunakan komponen UI yang sudah ada di project (button, input, dsb). Kalau perlu tambah helper kecil, jelaskan.
+
+Integrasi dengan backend auth API:
+
+Panggil endpoint register & login yang sudah dibuat (jelaskan URL dan method yang digunakan).
+
+Tangani state: loading, error (tampilkan pesan singkat), dan sukses.
+
+Setelah login sukses, simpan informasi auth (token/session yang relevan) dengan cara yang sesuai desain backend, lalu navigate ke katalog (sebutkan route-nya).
+
+Catatan implementasi & testing:
+
+Sebutkan file yang ditambah/diubah dan ringkasan singkat per file (1–2 kalimat).
+
+Jelaskan cara test manual di Expo:
+
+Flow register user baru.
+
+Flow login user existing.
+
+Verifikasi bahwa user tetap bisa browsing katalog tanpa login, dan setelah login kembali ke katalog.
+
+Batasan penting (hemat kredit):
+
+Jangan mengubah backend auth atau flow Midtrans/order yang sudah berjalan.
+
+Jangan mulai membangun Admin Dashboard dulu.
+
+Jika menemukan hal yang mengharuskan perubahan besar (misal: route katalog belum jelas), jelaskan dulu dan STOP untuk menunggu instruksi saya.
