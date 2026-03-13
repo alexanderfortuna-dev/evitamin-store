@@ -1,0 +1,57 @@
+Tolong bantu saya mengembangkan fitur auth (login/register) dan Admin Dashboard di project Next.js + TypeScript dengan Drizzle + PostgreSQL + Midtrans.
+
+Context singkat (jangan diubah kecuali perlu):
+
+Database PostgreSQL + Drizzle sudah aktif dengan tabel orders, order_items, users.
+
+Checkout + Midtrans + webhook sudah berfungsi: order disimpan sebagai pending, webhook mengubah ke paid/failed dan menyimpan paidAt.
+
+API sudah ada: GET /api/orders (support ?phone=) dan GET /api/orders/:orderId.
+
+Frontend checkout sudah mengirim imageUrl dan semua detail order tersimpan dengan benar.
+
+Fokus kerja (hemat kredit, langkah kecil):
+
+Audit auth & users (tanpa ubah kode dulu)
+
+Jelaskan:
+
+Apakah saat ini sudah ada mekanisme auth (session/JWT/cookie) atau belum ada sama sekali.
+
+Schema tabel users di Drizzle (field + tipe data, termasuk apakah ada role admin).
+
+File-file utama yang terkait auth/session (sebutkan path-nya).
+
+Berikan rekomendasi desain auth minimal (login/register + role admin) yang paling cocok dengan struktur sekarang.
+
+Desain singkat login/register + admin (masih tanpa implementasi penuh)
+
+Usulkan:
+
+Endpoint API untuk register dan login (method + path).
+
+Field yang dipakai untuk register (contoh: name, email/phone, password).
+
+Algoritma hashing password yang cocok (misal bcrypt/bcryptjs/argon2).
+
+Cara menyimpan session/token (cookie HTTP-only atau JWT).
+
+Buat daftar file yang akan diubah/ditambah (nama file + 1–2 kalimat rencana perubahan).
+
+Buat checklist test manual yang nanti akan saya jalankan setelah implementasi.
+
+Prioritas implementasi bertahap (jangan langsung semuanya)
+
+Langkah pertama yang saya minta SEKARANG:
+
+Hanya lakukan audit (poin 1) dan desain (poin 2).
+
+Jangan menulis atau mengubah kode dulu.
+
+Setelah menjelaskan hasil audit dan desain, STOP dulu dan tunggu instruksi saya sebelum implementasi API atau UI.
+
+Aturan hemat kredit:
+
+Fokus hanya pada scope di atas, jangan refactor besar atau menyentuh bagian lain (Midtrans/webhook/order saving sudah OK).
+
+Kalau menemukan masalah besar yang butuh refactor, cukup jelaskan masalah + opsi solusi, jangan langsung eksekusi.
