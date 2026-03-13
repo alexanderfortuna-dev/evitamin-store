@@ -8,8 +8,83 @@ import {
 } from "./midtrans";
 import { db } from "./db";
 import { orders, orderItems } from "../shared/schema";
+import { registerUser, loginUser, verifyToken } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+
+  // === AUTH: Register ===
+  app.post("/api/auth/register", async (req: Request, res: Response) => {
+    try {
+      const { name, phone, password } = req.body;
+
+      if (!name || typeof name !== "string" || name.trim().length < 2) {
+        return res.status(400).json({ error: "Nama wajib diisi (minimal 2 karakter)" });
+      }
+      if (!phone || typeof phone !== "string" || phone.trim().length < 9) {
+        return res.status(400).json({ error: "Nomor HP wajib diisi (minimal 9 digit)" });
+      }
+      if (!password || typeof password !== "string" || password.length < 6) {
+        return res.status(400).json({ error: "Password wajib diisi (minimal 6 karakter)" });
+      }
+
+      const user = await registerUser({
+        name: name.trim(),
+        phone: phone.trim(),
+        password,
+      });
+
+      res.status(201).json({ success: true, user });
+    } catch (error: any) {
+      if (error.message === "Nomor HP sudah terdaftar") {
+        return res.status(409).json({ error: error.message });
+      }
+      console.error("Register error:", error);
+      res.status(500).json({ error: "Gagal mendaftar, coba lagi" });
+    }
+  });
+
+  // === AUTH: Login ===
+  app.post("/api/auth/login", async (req: Request, res: Response) => {
+    try {
+      const { phone, password } = req.body;
+
+      if (!phone || typeof phone !== "string") {
+        return res.status(400).json({ error: "Nomor HP wajib diisi" });
+      }
+      if (!password || typeof password !== "string") {
+        return res.status(400).json({ error: "Password wajib diisi" });
+      }
+
+      const result = await loginUser(phone.trim(), password);
+
+      res.json({ success: true, token: result.token, user: result.user });
+    } catch (error: any) {
+      if (
+        error.message === "Nomor HP tidak ditemukan" ||
+        error.message === "Password salah"
+      ) {
+        return res.status(401).json({ error: error.message });
+      }
+      console.error("Login error:", error);
+      res.status(500).json({ error: "Gagal login, coba lagi" });
+    }
+  });
+
+  // === AUTH: Get current user (verify token) ===
+  app.get("/api/auth/me", (req: Request, res: Response) => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader?.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "Token tidak ditemukan" });
+      }
+      const token = authHeader.slice(7);
+      const payload = verifyToken(token);
+      res.json({ success: true, user: payload });
+    } catch {
+      res.status(401).json({ error: "Token tidak valid atau sudah kadaluarsa" });
+    }
+  });
+
   app.get("/api/midtrans/config", (_req: Request, res: Response) => {
     try {
       const config = getMidtransConfig();

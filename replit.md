@@ -31,7 +31,8 @@ Mobile-first supplements e-commerce app built with Expo (React Native) + Express
 - `server/midtrans.ts` — Midtrans Snap API client (transaction creation, status check)
 - `server/routes.ts` — Backend API routes (Midtrans config, create-transaction, status, notification webhook, order history)
 - `server/db.ts` — PostgreSQL database connection via Drizzle ORM
-- `shared/schema.ts` — Database schema: users, orders, order_items tables
+- `server/auth.ts` — Auth logic: hash password (bcryptjs), generate/verify JWT (jsonwebtoken), register/login functions
+- `shared/schema.ts` — Database schema: users (id, name, phone, password, role, createdAt), orders, order_items tables
 
 ## Data Source
 - Excel file: `attached_assets/Database_Replit_AI_Clean_1772301588802.xlsx`
