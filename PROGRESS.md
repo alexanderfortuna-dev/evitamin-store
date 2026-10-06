@@ -68,7 +68,25 @@ Legend: Done / Partial / Missing. Nothing below is "Verified" yet (no build or b
 
 Finish on a **React web + Supabase** codebase (the Lovable "VitaminKu Commerce" project, connected to GitHub so it can be worked on here without Lovable credits). Reasons: SSR for SEO/LCP, Supabase RLS for item 8, admin + role model already built. This Expo repo would need near-total rewrite for items 7–10 and 12.
 
-## 4. Milestone log
+## 4. Phase 1 decisions (Kings, 2026-10-06)
+
+| Topic | Decision |
+|---|---|
+| Codebase | Finish the Lovable project **"VitaminKu Commerce"** (`ceb042d8-dbf5-4723-867f-a5841def8b17`), worked on via GitHub sync. This Expo repo is frozen (reference only). |
+| Payment | **Midtrans** Snap, SANDBOX until Kings approves live keys |
+| Shipping | **Biteship** (rates + area autocomplete) |
+| Product data | Existing Supabase `products` table (1,413 rows) in the Lovable project; clean brands/categories/forbidden items; prices corrected by owner via Seller Center/CSV |
+| Customer login | Guest checkout + Google (Supabase Auth) |
+| Domain / brand | Launch on `*.lovable.app`; logo and colors from the current Lovable project |
+
+## 5. Blockers before Phase 2 (owner actions)
+
+1. Connect the Lovable project to GitHub (Lovable editor → GitHub → Connect → create repo, e.g. `alexanderfortuna-dev/vitaminku-commerce`). Then tell Claude the repo name.
+2. Midtrans **Sandbox** Server Key + Client Key → stored as secrets (Lovable Project Settings → Secrets: `MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`, `MIDTRANS_IS_PRODUCTION=false`). Never paste keys in chat.
+3. Biteship API key (testing mode) → secret `BITESHIP_API_KEY`.
+4. Google login: enable Google provider in Supabase Auth (Lovable Cloud → Auth → Providers).
+
+## 6. Milestone log
 | Date | Milestone | Status |
 |---|---|---|
 | 2026-10-06 | Phase 0 audit | Done |
